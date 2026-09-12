@@ -7,7 +7,7 @@ users = Table(
     metadata,
     Column('id', Integer, primary_key=True),
     Column('email', String, nullable=False),
-    Column('crated_at', TIMESTAMP),
+    Column('created_at', TIMESTAMP),
 )
 
 accounts = Table(

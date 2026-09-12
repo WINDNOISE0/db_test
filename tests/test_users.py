@@ -20,17 +20,15 @@ def test_users_exist_core(db_engine):
     assert len(rows) >= 4
 
 
-def test_insert_user_core(db_engine):
-    with db_engine.connect() as conn:
-        stmt = insert(users).values(email="eve@test.com")
-        conn.execute(stmt)
-        conn.commit()
+def test_insert_user_core(db_conn):
+    stmt = insert(users).values(email="eve1@test.com")
+    db_conn.execute(stmt)
 
-        result = conn.execute(select(users.c.email).where(users.c.email == "eve@test.com"))
-        row = result.fetchone()
+    result = db_conn.execute(select(users.c.email).where(users.c.email == "eve1@test.com"))
+    row = result.fetchone()
 
     assert row is not None
-    assert row.email == "eve@test.com"
+    assert row.email == "eve1@test.com"
 
 
 
