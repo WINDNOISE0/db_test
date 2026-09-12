@@ -1,0 +1,24 @@
+# Секреты и переменные окружения
+.env
+.env.local
+*.env
+
+# Виртуальное окружение
+.venv/
+venv/
+
+# Python кэш
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# IDE
+.idea/
+
+# Логи и временные файлы
+*.log
+.DS_Store
+
+# Docker (если появятся локальные volume-данные)
+*.pid
