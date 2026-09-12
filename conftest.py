@@ -1,5 +1,6 @@
 import pytest
 from db.connections import get_connections, get_engine, get_session
+from kafka_client.connections import get_producer, get_consumer
 
 
 @pytest.fixture
@@ -37,5 +38,14 @@ def db_session(db_conn):
     session.close()
 
 
+@pytest.fixture
+def kafka_producer():
+    producer = get_producer()
+    yield producer
+    producer.close()
 
-
+@pytest.fixture
+def kafka_consumer():
+    consumer = get_consumer(topic="payments")
+    yield consumer
+    consumer.close()
