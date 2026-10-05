@@ -1,13 +1,13 @@
-   playwright==1.63.0
-   pytest==9.1.1
-   pytest-xdist==3.8.0
-   pytest-randomly==5.0.0
-   pytest-rerunfailures==16.7
-   filelock==3.32.7
-   pydantic==2.13.5
-   pydantic-settings==2.15.0
-   python-dotenv==1.2.3
-   httpx==0.28.1
-   SQLAlchemy==2.0.52
-   psycopg2-binary==2.9.13
-   kafka-python==3.0.11
+playwright==1.63.0
+pytest==9.1.1
+pytest-xdist==3.8.0
+pytest-randomly==5.0.0
+pytest-rerunfailures==16.7
+filelock==3.32.7
+pydantic==2.13.5
+pydantic-settings==2.15.0
+python-dotenv==1.2.3
+httpx==0.28.1
+SQLAlchemy==2.0.52
+psycopg2-binary==2.9.13
+kafka-python==3.0.11
