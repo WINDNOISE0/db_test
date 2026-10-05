@@ -2,7 +2,9 @@ import uuid
 
 import pytest
 
-from kafka_client.helpers import send_event, create_topic, consume_events
+from clients.kafka_client.admin import create_topic
+from clients.kafka_client.consumer import consume_events
+from clients.kafka_client.producer import send_event
 
 @pytest.mark.kafka
 def test_send_payment_event(kafka_producer):

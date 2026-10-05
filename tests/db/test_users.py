@@ -1,7 +1,7 @@
 from sqlalchemy import select, insert
 
-from db.models import User
-from db.tables import users, transactions, accounts
+from clients.db.models import User
+from clients.db.tables import users, transactions, accounts
 
 
 def test_users_exists(db_cur):

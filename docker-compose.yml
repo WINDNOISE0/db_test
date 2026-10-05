@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:16
+    image: pgvector/pgvector:pg16
     environment:
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
@@ -28,3 +28,12 @@ services:
     ports:
       - "9092:9092"
       - "8082:8082"
+
+
+  payments:
+    build: app/services/payment_services   # собрать из Dockerfile в этой папке
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+

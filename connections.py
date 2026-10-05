@@ -1,4 +1,7 @@
 from kafka import KafkaProducer, KafkaConsumer
+import psycopg2
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 import json
 
 def get_producer():
@@ -15,3 +18,19 @@ def get_consumer(topic, group_id="test-group"):
         group_id=group_id,
         auto_offset_reset="earliest"
     )
+
+def get_connections():
+    return psycopg2.connect(
+    host='localhost',
+    port='5432',
+    dbname='payments_test',
+    user='test',
+    password='test'
+)
+
+def get_engine_alchemy():
+    return create_engine("postgresql+psycopg2://test:test@localhost:5432/payments_test")
+
+def get_session_alchemy(engine):
+    Session = sessionmaker(bind=engine)
+    return Session()
