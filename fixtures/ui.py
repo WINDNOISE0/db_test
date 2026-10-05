@@ -33,9 +33,15 @@ def browser(playwright: Playwright) -> Iterator[Browser]:
 def new_context(browser: Browser, request: pytest.FixtureRequest) -> Iterator[Callable[..., BrowserContext]]:
     contexts: list[BrowserContext] = []
 
-    def _new_context(**kwargs) -> BrowserContext:
+    def _new_context(action_timeout: int = settings.action_timeout,
+                     navigation_timeout: int = settings.navigation_timeout,
+                     **kwargs) -> BrowserContext:
         kwargs.setdefault("base_url", settings.ui_base_url)
         context = browser.new_context(**kwargs)
+
+        context.set_default_timeout(action_timeout)
+        context.set_default_navigation_timeout(navigation_timeout)
+
         context.tracing.start(screenshots=True, snapshots=True, sources=True)
         contexts.append(context)
         return context

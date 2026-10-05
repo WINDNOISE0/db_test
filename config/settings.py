@@ -11,5 +11,8 @@ class Settings(BaseSettings):
     ui_username: str
     ui_password: SecretStr
 
+    action_timeout: int = 10_000
+    navigation_timeout: int = 10_000
+
 
 settings = Settings()
