@@ -1,10 +1,9 @@
 import os
 
 import pytest
-
-from clients.api.payment_client import PaymentClient
 from dotenv import load_dotenv
 
+from clients.api.payment_client import PaymentClient
 from connections import get_connections, get_engine_alchemy, get_session_alchemy, get_producer, get_consumer
 
 pytest_plugins = ["fixtures.ui", "fixtures.auth"]

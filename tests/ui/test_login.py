@@ -4,12 +4,9 @@ from playwright.sync_api import expect, Page
 
 from config.settings import settings
 from ui.pages.dynamic_loading_page import DynamicLoadingPage
-
 from ui.pages.login_page import LoginPage
 from ui.pages.secure_page import SecurePage
 from ui.pages.tables_page import TablesPage
-
-
 
 
 def test_login(page):

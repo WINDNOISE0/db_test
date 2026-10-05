@@ -1,5 +1,3 @@
-import json
-
 from playwright.sync_api import Page, Route
 
 FRUITS_API="*/**/api/v1/fruits"

@@ -1,8 +1,6 @@
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-ui_base_url: str = "https://the-internet.herokuapp.com"
-headless: bool = False
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")

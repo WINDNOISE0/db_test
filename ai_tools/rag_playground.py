@@ -1,9 +1,10 @@
-from sentence_transformers import SentenceTransformer
-from db.connections import get_engine
-from sqlalchemy import text
-from anthropic import Anthropic
 import os
+
+from anthropic import Anthropic
+from db.connections import get_engine
 from dotenv import load_dotenv
+from sentence_transformers import SentenceTransformer
+from sqlalchemy import text
 
 load_dotenv()
 client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))

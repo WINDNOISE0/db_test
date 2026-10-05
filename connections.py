@@ -1,8 +1,10 @@
-from kafka import KafkaProducer, KafkaConsumer
+import json
+
 import psycopg2
+from kafka import KafkaProducer, KafkaConsumer
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-import json
+
 
 def get_producer():
     return KafkaProducer(

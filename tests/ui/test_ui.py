@@ -1,6 +1,3 @@
-from ui.pages.login_page import LoginPage
-
-
 def test_open_login_page(page):
     page.goto("/login")
 

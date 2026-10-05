@@ -1,5 +1,3 @@
-from time import sleep
-
 from playwright.sync_api import Page, expect
 
 from ui.mocks.fruits import mock_fruits, add_fruit_to_real_list

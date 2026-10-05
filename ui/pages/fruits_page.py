@@ -1,6 +1,6 @@
 from playwright.sync_api import Locator, Page
 
-from config.settings import Settings, settings
+from config.settings import settings
 from ui.pages.base_page import BasePage
 
 
