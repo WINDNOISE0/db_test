@@ -1,0 +1,38 @@
+name: Build test image
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - docker/ui-tests.Dockerfile
+      - pyproject.toml
+      - uv.lock
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-image:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: docker/ui-tests.Dockerfile
+          push: true
+          tags: |
+            ghcr.io/windnoise0/db-test-ui:latest
+            ghcr.io/windnoise0/db-test-ui:${{ github.sha }}
