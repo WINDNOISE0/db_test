@@ -19,9 +19,11 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
 
+    container:
+      image: ghcr.io/windnoise0/db-test-ui:latest
+
 
     env:
-      HEADLESS: true
       UI_USERNAME: ${{secrets.UI_USERNAME}}
       UI_PASSWORD: ${{secrets.UI_PASSWORD}}
 
@@ -30,24 +32,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.14"
-
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v6
-        with:
-          enable-cache: true
-
-      - name: Install dependencies
-        run: uv sync --locked
-
-      - name: Install Chromium
-        run: uv run playwright install --with-deps chromium
-
       - name: Run UI tests
-        run: uv run pytest tests/ui/test_network_mocking.py -n 2
+        run: pytest tests/ui/test_network_mocking.py -n 2
 
       - name: Set up Node.js
         if: always()
