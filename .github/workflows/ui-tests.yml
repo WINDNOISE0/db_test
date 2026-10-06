@@ -1,9 +1,15 @@
 name: UI tests
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+
 on:
   push:
     branches:
-      [main]
+      [ main ]
   pull_request:
   workflow_dispatch:
 
@@ -39,10 +45,46 @@ jobs:
       - name: Run UI tests
         run: pytest tests/ui/test_network_mocking.py -n 2
 
+      - name: Set up Node.js
+        if: always()
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Generate Allure report
+        if: always()
+        run: npx --yes allure generate ./allure-results
+
+      - name: Upload Allure report artifact
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report/
+          retention-days: 2
+
+      - name: Prepare report for GitHub Pages
+        if: always() && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: allure-report/
+
       - name: Upload artifacts on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: ui-test-artifacts
           path: artifacts/
-          retention-days: 7
+          retention-days: 2
+
+  deploy-report:
+    needs: ui-tests
+    if: always() && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
