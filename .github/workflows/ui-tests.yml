@@ -16,7 +16,7 @@ on:
 
 jobs:
   ui-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
 
 
@@ -80,7 +80,7 @@ jobs:
   deploy-report:
     needs: ui-tests
     if: always() && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
