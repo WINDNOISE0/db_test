@@ -7,6 +7,7 @@ on:
       - docker/ui-tests.Dockerfile
       - pyproject.toml
       - uv.lock
+      - .github/workflows/build-image.yml
   workflow_dispatch:
 
 permissions:
