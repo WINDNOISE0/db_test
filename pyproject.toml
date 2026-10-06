@@ -1,0 +1,29 @@
+[project]
+name = "db-test"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "allure-pytest>=2.16.2",
+    "filelock>=3.32.7",
+    "httpx>=0.28.1",
+    "kafka-python>=3.0.11",
+    "playwright>=1.63.0",
+    "psycopg2-binary>=2.9.13",
+    "pydantic>=2.13.5",
+    "pydantic-settings>=2.15.0",
+    "pytest>=9.1.1",
+    "pytest-randomly>=5.0.0",
+    "pytest-rerunfailures>=16.7",
+    "pytest-xdist>=3.8.0",
+    "python-dotenv>=1.2.3",
+    "sqlalchemy>=2.0.52",
+]
+
+[dependency-groups]
+ai = [
+    "anthropic>=1.5.0",
+    "ollama>=0.6.2",
+    "pgvector>=0.5.0",
+    "requests>=2.34.2",
+    "sentence-transformers>=6.0.1",
+]

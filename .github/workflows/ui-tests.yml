@@ -34,16 +34,20 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.14"
-          cache: pip
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: uv sync --locked
 
       - name: Install Chromium
-        run: playwright install --with-deps chromium
+        run: uv run playwright install --with-deps chromium
 
       - name: Run UI tests
-        run: pytest tests/ui/test_network_mocking.py -n 2
+        run: uv run pytest tests/ui/test_network_mocking.py -n 2
 
       - name: Set up Node.js
         if: always()
