@@ -28,6 +28,8 @@ jobs:
 
       - uses: docker/build-push-action@v7
         with:
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           context: .
           file: docker/ui-tests.Dockerfile
           push: true
