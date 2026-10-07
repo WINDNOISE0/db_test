@@ -1,71 +1,84 @@
 name: UI tests
 
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
 permissions:
   contents: read
   pages: write
   id-token: write
-
-
-on:
-  push:
-    branches:
-      [ main ]
-  pull_request:
-  workflow_dispatch:
-
+  packages: write
 
 jobs:
+  build-image:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: docker/ui-tests.Dockerfile
+          push: true
+          tags: |
+            ghcr.io/windnoise0/db-test-ui:latest
+            ghcr.io/windnoise0/db-test-ui:${{ github.sha }}
+
   ui-tests:
+    needs: build-image
     runs-on: ubuntu-24.04
     timeout-minutes: 20
-
     container:
-      image: ghcr.io/windnoise0/db-test-ui:latest
-
-
+      image: ghcr.io/windnoise0/db-test-ui:${{ github.sha }}
     env:
-      UI_USERNAME: ${{secrets.UI_USERNAME}}
-      UI_PASSWORD: ${{secrets.UI_PASSWORD}}
-
-
+      UI_USERNAME: ${{ secrets.UI_USERNAME }}
+      UI_PASSWORD: ${{ secrets.UI_PASSWORD }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Run UI tests
         run: pytest tests/ui/test_network_mocking.py -n 2
 
-      - name: Set up Node.js
+      - uses: actions/setup-node@v7
         if: always()
-        uses: actions/setup-node@v7
         with:
-          node-version: "22"
+          node-version: 22
 
       - name: Generate Allure report
         if: always()
         run: npx --yes allure generate ./allure-results
 
-      - name: Upload Allure report artifact
+      - name: Upload Allure report (on failure)
         if: failure()
         uses: actions/upload-artifact@v7
         with:
           name: allure-report
-          path: allure-report/
+          path: allure-report
           retention-days: 2
 
-      - name: Prepare report for GitHub Pages
+      - name: Upload Pages artifact
         if: always() && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v5
         with:
-          path: allure-report/
+          path: allure-report
 
-      - name: Upload artifacts on failure
+      - name: Upload Playwright artifacts (on failure)
         if: failure()
         uses: actions/upload-artifact@v7
         with:
-          name: ui-test-artifacts
+          name: playwright-artifacts
           path: artifacts/
-          retention-days: 2
 
   deploy-report:
     needs: ui-tests
@@ -75,6 +88,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v5
