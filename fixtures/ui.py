@@ -1,12 +1,14 @@
 from collections.abc import Callable, Iterator
 from pathlib import Path
 
+import allure
 import pytest
 from playwright.sync_api import Browser, BrowserContext, Page, Playwright, sync_playwright
 
 from config.settings import settings
 
 ARTIFACTS_DIR = Path("artifacts")
+
 
 
 @pytest.hookimpl(wrapper=True)
@@ -55,11 +57,25 @@ def new_context(browser: Browser, request: pytest.FixtureRequest) -> Iterator[Ca
         name = f"{request.node.name}_{index}"
         if failed:
             ARTIFACTS_DIR.mkdir(exist_ok=True)
+
             for page_index, page in enumerate(context.pages):
-                page.screenshot(path=ARTIFACTS_DIR / f"{name}_page{page_index}.png", full_page=True)
-            context.tracing.stop(path=ARTIFACTS_DIR / f"{name}.zip")
+                screenshot_path = ARTIFACTS_DIR / f"{name}_page{page_index}.png"
+                page.screenshot(path=screenshot_path, full_page=True)
+                allure.attach.file(
+                    screenshot_path,
+                    name=f"screenshot_context{index}_page{page_index}",
+                    attachment_type=allure.attachment_type.PNG,
+                )
+
+            trace_path = ARTIFACTS_DIR / f"{name}.zip"
+            context.tracing.stop(path=trace_path)
+            allure.attach.file(
+                trace_path,
+                name=f"trace_context{index}",
+                attachment_type=allure.attachment_type.ZIP,
+            )
         else:
-            context.tracing.stop()
+            context.tracing.stop()  # тест прошёл: остановить и выбросить запись
         context.close()
 
 

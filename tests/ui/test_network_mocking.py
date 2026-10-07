@@ -20,7 +20,7 @@ def test_add_fruit_mock(page: Page):
 
     fruits_page = FruitsPage(page).open()
 
-    expect(fruits_page.fruit("Strawberryr")).to_be_visible()
+    expect(fruits_page.fruit("Strawberryrв")).to_be_visible()
     expect(fruits_page.fruit("Strawberry")).to_be_visible()
 
 def test_add_faker_fruit(page: Page):
