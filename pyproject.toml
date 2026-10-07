@@ -4,6 +4,7 @@ version = "0.1.0"
 requires-python = ">=3.14"
 dependencies = [
     "allure-pytest>=2.16.2",
+    "faker>=40.41.0",
     "filelock>=3.32.7",
     "httpx>=0.28.1",
     "kafka-python>=3.0.11",
