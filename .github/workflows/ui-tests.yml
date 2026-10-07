@@ -34,8 +34,8 @@ jobs:
           file: docker/ui-tests.Dockerfile
           push: true
           tags: |
-            ghcr.io/windnoise0/db-test-ui:latest
             ghcr.io/windnoise0/db-test-ui:${{ github.sha }}
+            ${{ github.ref == 'refs/heads/main' && 'ghcr.io/windnoise0/db-test-ui:latest' || '' }}
 
   ui-tests:
     needs: build-image
@@ -84,7 +84,7 @@ jobs:
 
   deploy-report:
     needs: ui-tests
-    if: always() && github.ref == 'refs/heads/main'
+    if: always() && needs.ui-tests.result != 'skipped' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     environment:
       name: github-pages

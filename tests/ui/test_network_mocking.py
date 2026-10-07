@@ -25,7 +25,6 @@ def test_add_fruit_mock(page: Page):
 
 def test_add_faker_fruit(page: Page):
     faker = Faker()
-#   ff
     word = faker.word()
 
     fruit = {"name": word, "id": 22}
