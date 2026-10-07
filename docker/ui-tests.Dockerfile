@@ -11,7 +11,7 @@ ENV UV_PROJECT_ENVIRONMENT=/opt/venv \
 WORKDIR /app
 
 COPY pyproject.toml uv.lock ./
-RUN uv sync --lockedd
+RUN uv sync --locked
 RUN playwright install --with-deps chromium
 
 CMD ["pytest", "tests/ui/test_network_mocking.py"]
